@@ -1,0 +1,30 @@
+# ---------------------
+# Frontend
+node_modules/
+.next/
+out/
+build/
+.env
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------
+# Backend
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---------------------
+# Common OS / IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
