@@ -1,0 +1,13 @@
+.appointmentCardContainer {
+    border: 1px solid hlsa(258, 87%, 25%, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px;
+    background-color: hsl(258, 87%, 25%);
+    color: white;
+}
+
+.appointmentCardContainer:hover {
+    background-color: hsl(258, 87%, 15%);
+    cursor: pointer;
+}

@@ -1,10 +1,16 @@
-import AppointmentList from "./components/AppointmentList";
+"use client";
+
+import AppointmentList from "./components/Container/AppointmentListContainer/AppointmentList";
+import styles from "./page.module.css";
+import React, { useEffect } from "react";
 
 export default function HomePage() {
+
+
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Open Appointments</h1>
+    <div className={styles.pageContainer}>
+      <h1 className="page-title">Open Appointments</h1>
       <AppointmentList />
-    </main>
+    </div>
   );
 }

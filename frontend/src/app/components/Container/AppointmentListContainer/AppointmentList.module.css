@@ -1,0 +1,16 @@
+.appointmentListContainer {
+    border: 2px solid hsla(0, 0%, 0%, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 100vw;
+    max-height: 50vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 15px;
+    background-color: hsl(0, 0%, 95%);
+}
+
+.appointmentListContainer:hover {
+    background-color: hsl(0, 0%, 85%);
+}
