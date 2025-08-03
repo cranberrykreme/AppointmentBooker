@@ -10,7 +10,3 @@
     margin: 15px;
     background-color: hsl(0, 0%, 95%);
 }
-
-.appointmentListContainer:hover {
-    background-color: hsl(0, 0%, 85%);
-}

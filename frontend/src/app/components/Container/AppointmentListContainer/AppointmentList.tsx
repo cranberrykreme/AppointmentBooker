@@ -1,38 +1,43 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import AppointmentCard from "../../Presentational/AppointmentCardContainer/AppointmentCard";
 import Appointment from "../../../../../Models/AppointmentModel";
+import AppointmentModal from "../../Presentational/AppointmentModalContainer/AppointmentModal";
+import { useOpenAppointments } from "@/hooks/useOpenAppointments";
 import styles from "./AppointmentList.module.css";
 
 export default function AppointmentList() {
-  const appointmentsRef = useRef<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {appointments, loading, save} = useOpenAppointments();
+  const selectedAppointmentRef = useRef<Appointment | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:5000/api/OpenAppointments")
-      .then(res => res.json())
-      .then((data: Appointment[]) => {
-        appointmentsRef.current = data;
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  }, []);
+  // Handle the card click to open the modal
+  const handleCardClick = (ref: Appointment) => {
+    selectedAppointmentRef.current = ref;
+    setModalOpen(true);
+  }
 
   if (loading) return <p>Loading...</p>;
-  if (!appointmentsRef.current.length) return <p>No appointments available.</p>;
+  if (!appointments.length) return <p>No appointments available.</p>;
 
   return (
     <div className={styles.appointmentListContainer}>
-      {appointmentsRef.current.map((_, index) => (
-        <AppointmentCard key={appointmentsRef.current[index].id} 
-        appointmentRef={appointmentsRef}
-        index={index} />
+      {appointments.map((app) => (
+        <AppointmentCard key={app.id} 
+        appointment={app}
+        onClick={() => handleCardClick(app)} />
       ))}
+
+      {modalOpen && (
+        <AppointmentModal
+          appointmentRef={selectedAppointmentRef}
+          onClose={() => setModalOpen(false)}
+          onSave={(updated: Appointment) => {
+            save(updated);
+          }}
+        />
+      )}
     </div>
   );
 }

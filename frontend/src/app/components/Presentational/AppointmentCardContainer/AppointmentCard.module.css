@@ -8,6 +8,7 @@
 }
 
 .appointmentCardContainer:hover {
+    transition: background-color 0.5s ease-in-out;
     background-color: hsl(258, 87%, 15%);
     cursor: pointer;
 }

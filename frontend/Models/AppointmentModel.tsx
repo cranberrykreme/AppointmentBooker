@@ -4,4 +4,5 @@ export default interface Appointment {
   time?: string;
   doctor?: string;
   pricePerHour?: number;
+  notes?: string;
 }

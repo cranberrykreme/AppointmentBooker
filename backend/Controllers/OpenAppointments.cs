@@ -5,12 +5,7 @@ using Microsoft.AspNetCore.Razor.Hosting;
 [Route("api/[controller]")]
 public class OpenAppointmentsController : ControllerBase
 {
-    private List<OpenAppointmentsModel> _appointments;
-
-    public OpenAppointmentsController()
-    {
-        _appointments = GetSampleAppointments();
-    }
+    private static List<OpenAppointmentsModel> _appointments = GetSampleAppointments();
 
     [HttpGet]
     public IActionResult GetOpenAppointments()
@@ -21,6 +16,23 @@ public class OpenAppointmentsController : ControllerBase
         }
 
         return Ok(_appointments);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetOpenAppointmentsById(int id)
+    {
+        if (_appointments == null || _appointments.Count == 0)
+        {
+            return NotFound("No open appointments available.");
+        }
+
+        var appointment = _appointments.FirstOrDefault(a => a.Id == id);
+        if (appointment == null)
+        {
+            return NotFound($"Appointment with ID {id} not found.");
+        }
+
+        return Ok(appointment);
     }
 
     [HttpPut("{id}")]
@@ -36,6 +48,7 @@ public class OpenAppointmentsController : ControllerBase
         appointment.Time = updatedAppointment.Time;
         appointment.Doctor = updatedAppointment.Doctor;
         appointment.PricePerHour = updatedAppointment.PricePerHour;
+        appointment.Notes = updatedAppointment.Notes;
 
         return Ok(appointment);
     }
@@ -53,7 +66,7 @@ public class OpenAppointmentsController : ControllerBase
         return Ok($"Appointment with ID {id} deleted successfully.");
     }
 
-    private List<OpenAppointmentsModel> GetSampleAppointments()
+    private static List<OpenAppointmentsModel> GetSampleAppointments()
     {
         return new List<OpenAppointmentsModel>
         {
