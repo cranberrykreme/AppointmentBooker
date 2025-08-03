@@ -1,6 +1,6 @@
 export default interface Appointment {
   id: number;
-  date: string;
+  date: Date;
   time?: string;
   doctor?: string;
   pricePerHour?: number;

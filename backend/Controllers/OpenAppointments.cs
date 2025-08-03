@@ -74,7 +74,7 @@ public class OpenAppointmentsController : ControllerBase
             new OpenAppointmentsModel { Id = 2, Date = DateTime.Now.AddDays(4), Time = "12:00 PM", Doctor = "Dr. Jones", PricePerHour = 200.00m },
             new OpenAppointmentsModel { Id = 3, Date = DateTime.Now.AddDays(5), Time = "10:30 AM", Doctor = "Dr. Smith", PricePerHour = 100.00m },
             new OpenAppointmentsModel { Id = 4, Date = DateTime.Now.AddDays(6), Time = "11:00 AM", Doctor = "Dr. Michael", PricePerHour = 150.00m },
-            new OpenAppointmentsModel { Id = 5, Date = DateTime.Now.AddDays(7), Time = "01:00 PM", Doctor = "Dr. Grant", PricePerHour = 250.00m }
+            new OpenAppointmentsModel { Id = 5, Date = DateTime.Now.AddDays(7), Time = "1:00 PM", Doctor = "Dr. Grant", PricePerHour = 250.00m }
         };
     }
 }
