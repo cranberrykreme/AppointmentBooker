@@ -1,0 +1,15 @@
+.footer {
+  background-color: hsl(222, 47%, 11%); /* Dark navy to match your header */
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 14px;
+
+  position: fixed; /* change to fixed if you want it always at bottom */
+  bottom: 0;
+  width: 100%;
+}
+
+.footer p {
+  margin: 0;
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Appointment from "../../Models/AppointmentModel";
-import { fetchAppointments, updateAppointment } from "../services/openAppointmentService";
+import { fetchAppointments, updateAppointment, addAppointment } from "../services/openAppointmentService";
 
 export function useOpenAppointments() {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -25,8 +25,13 @@ export function useOpenAppointments() {
     };
 
     const save = async (updated: Appointment) => {
-        const saved = await updateAppointment(updated);
-        setAppointments(prev => prev.map(a => (a.id === saved.id ? saved : a)));
+        if(appointments.some(appt => appt.id === updated.id)){
+            const saved = await updateAppointment(updated);
+            setAppointments(prev => prev.map(a => (a.id === saved.id ? saved : a)));
+        } else { // Add a new appointment
+            const savedNew = await addAppointment(updated);
+            setAppointments(prev => [...prev, savedNew]);
+        }
     };
 
     return { appointments, loading, error, save, reload: load };

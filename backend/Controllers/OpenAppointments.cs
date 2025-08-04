@@ -53,6 +53,22 @@ public class OpenAppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
+    [HttpPost]
+    public IActionResult AddAppointment([FromBody] OpenAppointmentsModel newAppointment)
+    {
+        if (newAppointment == null)
+        {
+            return BadRequest("Invalid appointment data provided");
+        }
+
+        // Generate an Id based on the highest existing one.
+        newAppointment.Id = _appointments.Any() ? _appointments.Max(a => a.Id) + 1 : 1;
+
+        _appointments.Add(newAppointment);
+
+        return CreatedAtAction(nameof(GetOpenAppointmentsById), new { id = newAppointment.Id }, newAppointment);
+    }
+
     [HttpDelete("{id}")]
     public IActionResult DeleteAppointment(int id)
     {

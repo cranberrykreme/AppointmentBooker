@@ -6,7 +6,14 @@ import Appointment from "../../../../../Models/AppointmentModel";
 export default function AppointmentModal(
     { appointmentRef, onClose, onSave }: 
     {appointmentRef: RefObject<Appointment | null>, onClose: () => void, onSave: (updated: Appointment) => void}){
-        const appointment = appointmentRef.current;
+        const appointment = appointmentRef.current || {
+            id: 0,
+            date: new Date(),
+            time: "",
+            doctor: "",
+            pricePerHour: 0,
+            notes: ""
+        };
         const [notes, setNotes] = useState(appointment?.notes ? appointment.notes : "");
         const [doctor, setDoctor] = useState(appointment?.doctor ? appointment.doctor : "");
         const [pricePerHour, setPricePerHour] = useState(appointment?.pricePerHour ? appointment.pricePerHour : 0);
@@ -14,8 +21,6 @@ export default function AppointmentModal(
         const [time, setTime] = useState(appointment?.time ? appointment.time : "");
         const doctorOptions: Record<string, number> = {"Dr. Smith": 100, "Dr. Jones": 200, "Dr. Brown": 135, 
                                 "Dr. Grant": 250, "Dr. Michael": 150, "Dr. Who": 350};
-
-        if(!appointment) return null;
 
         // Ensure onClose reference stays stable for effect
         const handleClose = useCallback(() => {
@@ -89,60 +94,73 @@ export default function AppointmentModal(
         };
 
         return (
-            <div className={styles.modalOverlay} onClick={handleOverlayClick}>
-                <div className={styles.modalContentBuffer} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.modalContent}>
-                        <button className={styles.closeButton} onClick={onClose}>X</button>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSaveClick();
+                }}>
+                <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+                    <div className={styles.modalContentBuffer} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalContent}>
+                            <button className={styles.closeButton} onClick={onClose}>X</button>
 
-                        <h2>Appointment Details</h2>
-                        <p className={styles.pLabel}><strong>Date:</strong> 
-                            <input 
-                                type="date"
-                                className={styles.dateInput}
-                                value={date.toISOString().split('T')[0]}
-                                onChange={handleDateUpdate}
+                            <h2>Appointment Details</h2>
+                            <p className={styles.pLabel}><strong>Date:</strong> 
+                                <input 
+                                    type="date"
+                                    required
+                                    className={styles.dateInput}
+                                    min={new Date().toISOString().split('T')[0]}
+                                    value={date.toISOString().split('T')[0]}
+                                    onChange={handleDateUpdate}
+                                />
+                            </p>
+                            <p className={styles.pLabel}><strong>Time:</strong>
+                                <select 
+                                    value={time} 
+                                    required
+                                    onChange={(e) => setTime(e.target.value)} 
+                                    className={styles.optionsSelect}>
+                                        <option value="">-- Select Time--</option>
+                                    {times.map((t) => (
+                                        <option key={t} value={t}>
+                                            {t}
+                                        </option>
+                                    ))}
+                                </select>
+                            </p>
+                            <p className={styles.pLabel}><strong>Doctor:</strong> 
+                                <select 
+                                    value={doctor} 
+                                    required
+                                    onChange={handleDoctorChange} 
+                                    className={styles.optionsSelect}>
+                                        <option value="">-- Select Doctor--</option>
+                                    {Object.keys(doctorOptions).map((doc) => (
+                                        <option key={doc} value={doc}>
+                                            {doc} - ${doctorOptions[doc]}
+                                        </option>
+                                    ))}
+                                </select>
+                            </p>
+
+                            <p className={styles.pLabel}><strong>Price per Hour:</strong> ${pricePerHour}</p>
+                            
+                            <textarea
+                                className={styles.textarea}
+                                placeholder="Add notes..."
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
                             />
-                        </p>
-                        <p className={styles.pLabel}><strong>Time:</strong>
-                            <select 
-                                value={time} 
-                                onChange={(e) => setTime(e.target.value)} 
-                                className={styles.optionsSelect}>
-                                {times.map((t) => (
-                                    <option key={t} value={t}>
-                                        {t}
-                                    </option>
-                                ))}
-                            </select>
-                        </p>
-                        <p className={styles.pLabel}><strong>Doctor:</strong> 
-                            <select 
-                                value={doctor} 
-                                onChange={handleDoctorChange} 
-                                className={styles.optionsSelect}>
-                                {Object.keys(doctorOptions).map((doc) => (
-                                    <option key={doc} value={doc}>
-                                        {doc} - ${doctorOptions[doc]}
-                                    </option>
-                                ))}
-                            </select>
-                        </p>
-
-                        <p className={styles.pLabel}><strong>Price per Hour:</strong> ${pricePerHour}</p>
-                        
-                        <textarea
-                            className={styles.textarea}
-                            placeholder="Add notes..."
-                            value={notes}
-                            onChange={(e) => setNotes(e.target.value)}
-                        />
-                        
-                        <div className={styles.buttonActions}>
-                            <button onClick={handleSaveClick} className={styles.saveButton}>Save Changes</button>
-                            <button onClick={onClose} className={styles.cancelButton}>Cancel</button>
+                            
+                            <div className={styles.buttonActions}>
+                                <button type="submit" className={styles.saveButton}>Save Changes</button>
+                                <button onClick={onClose} className={styles.cancelButton}>Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
+
         );
 };

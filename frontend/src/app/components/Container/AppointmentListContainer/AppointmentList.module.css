@@ -3,10 +3,37 @@
     border-radius: 10px;
     padding: 20px;
     width: 100vw;
-    max-height: 50vh;
+    max-height: 75vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     margin: 15px;
     background-color: hsl(0, 0%, 95%);
+    overflow: auto;
+}
+
+.addAppointmentButton {
+  position: fixed;
+  bottom: 20px;           /* 20px from the bottom */
+  right: 20px;            /* 20px from the right */
+  background-color: hsl(211, 100%, 50%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 50px;    /* rounded pill shape */
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px hsla(0, 0%, 0%, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  z-index: 20;          /* ensures it stays on top of other elements */
+}
+
+.addAppointmentButton:hover {
+  background-color: #0056b3; /* darker blue on hover */
+  transform: scale(1.05);
+}
+
+.addAppointmentButton:active {
+  transform: scale(0.98);
 }

@@ -12,9 +12,16 @@ export default function AppointmentList() {
   const selectedAppointmentRef = useRef<Appointment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  
+
   // Handle the card click to open the modal
   const handleCardClick = (ref: Appointment) => {
     selectedAppointmentRef.current = ref;
+    setModalOpen(true);
+  }
+
+  const handleAddClick = () => {
+    selectedAppointmentRef.current = null;
     setModalOpen(true);
   }
 
@@ -22,22 +29,31 @@ export default function AppointmentList() {
   if (!appointments.length) return <p>No appointments available.</p>;
 
   return (
-    <div className={styles.appointmentListContainer}>
-      {appointments.map((app) => (
-        <AppointmentCard key={app.id} 
-        appointment={app}
-        onClick={() => handleCardClick(app)} />
-      ))}
+    <>
+      <div className={styles.appointmentListContainer}>
+        {appointments.map((app) => (
+          <AppointmentCard key={app.id} 
+          appointment={app}
+          onClick={() => handleCardClick(app)} />
+        ))}
 
-      {modalOpen && (
-        <AppointmentModal
-          appointmentRef={selectedAppointmentRef}
-          onClose={() => setModalOpen(false)}
-          onSave={(updated: Appointment) => {
-            save(updated);
-          }}
-        />
-      )}
-    </div>
+        {modalOpen && (
+          <AppointmentModal
+            appointmentRef={selectedAppointmentRef}
+            onClose={() => setModalOpen(false)}
+            onSave={(updated: Appointment) => {
+              save(updated);
+            }}
+          />
+        )}
+      </div>
+
+      <button 
+        className={styles.addAppointmentButton}
+        onClick={handleAddClick}>
+          + Add Appointment
+      </button>
+    </>
+
   );
 }
